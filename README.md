@@ -1,5 +1,89 @@
-# Generics-Java-Concept
-This repository provides a comprehensive guide to Generics in Java, covering fundamental concepts such as type parameters, wildcards, and generic methods. It includes examples and explanations to help both beginners and experienced Java developers implement Generics effectively.
+
+<p align="center">
+  <img src="./ReadMe-Images/JAVA_Concepts.png">
+</p>
+
+
+
+# JAVA Generics: A Comprehensive Guide
+This repository provides a comprehensive guide to Generics in Java,<br />
+covering fundamental concepts such as type parameters, wildcards, <br />
+and generic methods. 
+
+It includes examples and explanations to help both beginners <br />
+and experienced Java developers implement Generics effectively.
+
+
+
+
+
+
+# Table of Content
+- Generics: The Concept
+  - [With & Without generics](#with-&-without-generics)
+  - [Parameterized types](#parameterized-types)
+- Generics: Why we need it (Type Safety)
+  - [The KeyPoint](#the-keypoint)
+  - [The Presence](#the-presence)
+  - [End-Note](#end-note)
+- Generics: Bounded Types
+  - [The Idea](#the-idea)
+  - [Usecase (problem)](#usecase-problem)
+  - [Usecase (bounded types as solution)](#usecase-bounded-types-as-solution)
+  - [Interesting End-Note](#interesting-end-note)
+- Generics: WildCard Arguments
+  - [The Need](#the-need)
+  - [The Concept](#the-concept)
+  - [The Control](#the-control)
+  - [Usecase](#usecase)
+- Generics: Raw Type
+  - [The Idea](#the-idea)
+  - [The Conflict: Bypassing Type Safety](#the-conflict----bypassing-type-safety)
+  - [The Warning](#the-warning)
+  - [End Note](#end-note)
+- Generics: Class Hierarchies
+- Generics: Type Inference
+- Generics: Implementation (Erasure)
+  - [How it works](#how-it-works)
+  - [Ambiguity errors](#ambiguity-errors)
+  - [Bridge Methods](#bridge-methods)
+- Generics: Restrictions
+
+
+
+## Generics: The Concept
+### With & Without generics
+Through the use of generics, it is possible<br />
+to create classes, interfaces, and methods<br />
+that will work in a type-safe manner with various kinds of data.
+
+You can define an algorithm (class) once,<br /> 
+independent of any specific type of data,<br />
+and then apply that algorithm to a wide variety of data types <br />
+without additional effort. plus an added advantage of type safety. 
+
+<img src="./ReadMe-Images/without-generics.png" style="width:600px; height:auto" alt="Showing an implementation without generics">
+<img src="./ReadMe-Images/with-generics.png" style="width:600px; height:auto" alt="Showing an implementation with generics">
+
+
+### Parameterized types
+Generics means Parameterized types.<br />
+such that the type our class works on <br />
+is the type passed in as a parameter to the class.
+
+Parameterized types are important because they enable you <br />
+to create `classes`, `interfaces` and `methods` in which <br />
+the type of data upon which they operate is specified as a parameter.
+
+<img src="./ReadMe-Images/generics-simple-example-A.svg" style="width:600px; height:auto" alt="Showing a simple generic example A">
+
+<img src="./ReadMe-Images/generics-simple-example-B.svg" style="width:600px; height:auto" alt="Showing a simple generic example B">
+
+In pre-generic code,<br />
+Generalized classes, Generalized interfaces, Generalized methods<br />
+used Object Reference to operate on various types of objects.<br />
+the problem was that they could not do so with type safety.
+More on this later
 
 
 
@@ -10,10 +94,71 @@ This repository provides a comprehensive guide to Generics in Java, covering fun
 
 
 
-# Generics: Bounded Types
-## The Idea
+
+
+
+
+## Generics: Why we need it (Type Safety)
+Generics Power with respect to type safety involves:
+* Explicit Casting
+* Type Mis-match Detection
+
+
+### The KeyPoint
+One key point to understand about generic types<br />
+is that a reference of one specific version of a generic type<br />
+is not compatible with another version of the same generic type.<br />
+This is How generics add type safety and prevent errors.
+
+<img src="./ReadMe-Images/generics-type-safety-key-point.svg" style="width:600px; height:auto" alt="Showing the keypoint">
+
+Also, when declaring an instance of a generic type<br />
+the type argument passed must be a `Reference Type`.
+
+
+### The Presence
+Can we add the features of Generics in a non-generic environment?<br />
+if so, why the presence of the generic feature.
+
+Hmmm, yes we can, by simply specifying `Object`<br />
+as the data type and employing the proper cast.
+
+<img src="./ReadMe-Images/generics-type-safety-NonGenA.svg" style="width:600px; height:auto" alt="Showing Generic Feature in a Non Generic Environment A">
+
+<img src="./ReadMe-Images/generics-type-safety-NonGenB.svg" style="width:600px; height:auto" alt="Showing Generic Feature in a Non Generic Environment B">
+
+We have two problems with this approach<br />
+* Explicit Casts must be employed to retrieve the stored data
+* Many knds of Type mismatch errors connot be found until after compilation.
+
+Notice `iOb = strOb;` which is syntactically valid because:
+* all NonGen reference are the same
+* any NonGen reference can refer to any other NonGen Object<br />
+  and that is where the problem of type mis-match comes in.<br />
+  such that it is possible for iOb to refer to an Object<br />
+  that stores a String and not an Integer.
+
+
+### End-Note
+The Ability to create Type-safe code in which type mis-match errors <br />
+are caught at compile time is a key advantage of generics.
+
+
+
+
+
+
+
+
+
+
+
+
+## Generics: Bounded Types
+### The Idea
 Type Parameters could be replaced by any class type<br />
-but sometimes it is useful to limit the types that can be passed to a type parameter.<br />
+but sometimes it is useful to limit the types<br />
+that can be passed to a type parameter.<br />
 this is important and we would see a usecase soon.
 
 When specifying a type parameter,<br />
@@ -27,11 +172,11 @@ superclass or subclass of that superclass.<br />
 thus, that superclass defines an inclusive, upper limit.
 
 
-## Usecase (problem)
+### Usecase (problem)
 you want to create a generic class that contains a method<br />
 that returns the average of an array of numbers.
 
-<img src="./ReadMe-Images/bounded-types-usecase-problem.svg" style="width:600px; height:auto" alt="Showing Type Inference A ">
+<img src="./ReadMe-Images/bounded-types-usecase-problem.svg" style="width:600px; height:auto" alt="Showing the need of bounded Types A">
 
 the line `sum += nums[i].doubleValue();` causes compile error<br />
 because the compiler has no way to know that you are intending<br />
@@ -41,11 +186,11 @@ Thus when compiled, an error reports that indicates<br />
 `The doubleValue() method is unknown`
 
 
-## Usecase (bounded types as solution)
-<img src="./ReadMe-Images/bounded-types-usecase-solution.svg" style="width:600px; height:auto" alt="Showing Type Inference A ">
+### Usecase (bounded types as solution)
+<img src="./ReadMe-Images/bounded-types-usecase-solution.svg" style="width:600px; height:auto" alt="Showing the need of bounded Types B">
 
 
-## Interesting End-Note
+### Interesting End-Note
 in Addition to using A class type as a bound<br />
 you can also use an interface type (now things are getting interesting)
 
@@ -68,8 +213,45 @@ you can also use a type intersection in a cast.
 
 
 
+## Generics: WildCard Arguments
+### The Need
+As useful as type safety is, sometimes it can<br />
+get in the way of a perfectly acceptable construct.
 
-# Generics: WildCard Arguments
+Assume you want to add a method called `isSameArg()`<br />
+that determines if two `Stats Object` contain arrays<br />
+that yields the same avarage, no matter what type of numeric data<br />
+the Stats Object holds whether or `Double Type` or `Integer Type`
+
+<img src="./ReadMe-Images/wildcard-argument-the need-A.svg" style="width:600px; height:auto" alt="Showing the need of wildcard argument A">
+The problem with the isSameArg() method aboveis the limitation <br />
+that it only compares Stats Object of the same Type Parameter. <br />
+It cannot compare btw a Double Stats Object and an Integer Stats Object.<br />
+
+This is where the concept of Generic WildCard Arguments come in.
+
+
+### The Concept
+To Create a general isSameArg() method,<br />
+you must use another feature of JAVA generics which is `The wildcard Argument`.<br />
+It is specified by `?` instead of an Alphabeth.
+
+<img src="./ReadMe-Images/wildcard-argument-the-concept.svg" style="width:600px; height:auto" alt="Showing the concept of wildcard argument">
+
+### The Control
+It is important to understand,<br />
+the wild card simple matches any valid Stats Object.
+
+Thus to have control on the Stats Object that matches,<br />
+you simply use an `extend clause` to specify an upper-bound,<br />
+or simple use a `super clause` to specigy a lower-bound.
+
+`class_Name<? extends [class_names] & [interface_names]>`
+`class_Name<? super subclass>`
+
+### Usecase
+<img src="./ReadMe-Images/wildcard-argument-usecase-imageA.svg" style="width:600px; height:auto" alt="Showing a usecase of wildcard argument">
+<img src="./ReadMe-Images/wildcard-argument-usecase-imageB.svg" style="width:600px; height:auto" alt="Showing a usecase of wildcard argument">
 
 
 
@@ -79,9 +261,8 @@ you can also use a type intersection in a cast.
 
 
 
-
-# Generics: Raw Type
-## The Idea
+## Generics: Raw Type
+### The Idea
 Because support for generics did not exist prior to JDK 5 <br />
 it was necessary to provide some transition path from old pre-generic code.
 
@@ -102,7 +283,8 @@ In Essesnce, this creates a Gen Object whose type `T` is replaced by `Object`.
 Secondly, because at run-time, the type of ob is `Object`,<br />
 there must be a cast to obtain its value as a type `double`
 
-## The Conflict: Bypassing Type Safety
+
+### The Conflict -- Bypassing Type Safety
 <img src="./ReadMe-Images/raw-generics-conflict.svg" style="width:600px; height:auto" alt="Showing Conflicts dealing with Raw Types ">
 
 A Raw Type is not Type Safe. Thus, the variable of a raw type<br />
@@ -127,12 +309,14 @@ Here, A Generic Reference is assigned to a raw reference variable.<br />
 But the case assumes that it contains Double.<br />
 this error cannot be prevented at compile time, rather it causes a run time error.
 
-## The Warning
+
+### The Warning
 Because of the potential for danger inherent in Raw Types,<br />
 `Javac` displays `Unchecked warnings` when a Raw Type is used <br /> 
 in a way that might jeopardize type safety.
 
-## End Note
+
+### End Note
 You should limit the use of raw types to those cases<br />
 in which you must mix legacy code with newer, generic code.<br />
 Raw Types are simply a transitional feature<br />
@@ -141,7 +325,12 @@ and not something that should be used for new code.
 
 
 
-# Generics: Class Hierarchies
+
+
+
+
+
+## Generics: Class Hierarchies
 Generic class can be a part of a class hierarchy<br />
 in just the same way as a non-generic class.
 
@@ -166,7 +355,12 @@ Typical Right!!
 
 
 
-# Generics: Type Inference
+
+
+
+
+
+## Generics: Type Inference
 
 Basically, When using Generics, we can use shorter syntax.
 which helps us not to repeat our selves.
@@ -180,7 +374,35 @@ This is where Type Inference comes in. Have a look.
 
 
 
-# Generics: Implementation (Erasure)
 
 
+
+
+## Generics: Implementation (Erasure)
+An important constraint that govern the way that generics were added to JAVA<br />
+was the need for compatibility with previous versions of JAVA.
+
+The way JAVA implements generics while satisfying<br /> 
+this constraint is through the use of `Erasure`.
+
+
+### How it works
+When Your Java Code is compiled,<br /> 
+All Generic type information is removed (erased).
+This means Replacing type parameter with their bound type
+which Object if no explicit bound is specified.
+
+Then applying the appropriate c
+### Ambiguity errors
+### Bridge Methods
+
+
+
+
+
+
+
+
+
+## Generics: Restrictions
 
